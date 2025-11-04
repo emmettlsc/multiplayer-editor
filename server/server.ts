@@ -23,7 +23,7 @@ wss.on('connection', async (ws: WebSocket, req: http.IncomingMessage) => {
   const parsedUrl = url.parse(req.url || '', true);
   const pathParts = parsedUrl.pathname?.split('/') || [];
 
-  // Expected: /room/{roomId}
+  // should be in the form: /room/{roomId}
   if (pathParts[1] !== 'room' || !pathParts[2]) {
     ws.close(1008, 'Invalid path. Expected: /room/{roomId}');
     return;
@@ -51,7 +51,7 @@ wss.on('connection', async (ws: WebSocket, req: http.IncomingMessage) => {
       return;
     }
 
-    // Authentication successful
+    // successful auth
     const clientInfo: AuthenticatedClient = {
       ws,
       email: payload.email,
@@ -60,7 +60,7 @@ wss.on('connection', async (ws: WebSocket, req: http.IncomingMessage) => {
 
     clients.set(ws, clientInfo);
 
-    // Add to room
+    // add to room map
     if (!rooms.has(roomId)) {
       rooms.set(roomId, new Set());
     }
@@ -68,7 +68,7 @@ wss.on('connection', async (ws: WebSocket, req: http.IncomingMessage) => {
 
     console.log(`${payload.email} joined room ${roomId}`);
 
-    // Notify user of successful connection
+    // notify user of successful connection
     ws.send(JSON.stringify({
       type: 'welcome',
       email: payload.email,
@@ -76,7 +76,7 @@ wss.on('connection', async (ws: WebSocket, req: http.IncomingMessage) => {
       peersInRoom: rooms.get(roomId)!.size - 1,
     }));
 
-    // Broadcast to other peers in the room
+    // broadcast also
     broadcastToRoom(roomId, ws, {
       type: 'peer-joined',
       email: payload.email,

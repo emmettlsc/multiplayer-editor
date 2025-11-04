@@ -18,14 +18,15 @@ function getKey(header: jwt.JwtHeader, callback: jwt.SigningKeyCallback) {
   });
 }
 
+// originally imported TokenPayload from google-auth-library but this is simpler
 export interface GoogleTokenPayload {
-  email: string;
+  email: string; // emmettlsc@gmail.com
   email_verified: boolean;
-  name: string;
-  picture: string;
-  iss: string;
-  aud: string;
-  sub: string;
+  name: string; // user's full name
+  picture: string; // URL of the user's profile picture
+  iss: string;  //issuer identifier = accounts.google.com
+  aud: string; //audience = OAuth 2.0 client ID
+  sub: string; // unique identifier for the user
 }
 
 export function verifyGoogleToken(token: string): Promise<GoogleTokenPayload> {
@@ -48,11 +49,11 @@ export function verifyGoogleToken(token: string): Promise<GoogleTokenPayload> {
   });
 }
 
-// Hardcoded allowlist
+// for testing
 const ALLOWED_EMAILS = new Set([
   'emmettlsc@gmail.com',
 ]);
 
 export function isUserAllowed(email: string): boolean {
-  return true;//ALLOWED_EMAILS.has(email);
+  return true; //ALLOWED_EMAILS.has(email);
 }

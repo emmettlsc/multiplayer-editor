@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>P2P Collaborative Editor</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #1e1e1e;
+      color: #fff;
+    }
+    #app {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    #login-screen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      flex-direction: column;
+      gap: 20px;
+    }
+    #login-screen h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+    #login-screen button {
+      background: #4285f4;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #login-screen button:hover {
+      background: #357ae8;
+    }
+    #login-screen .error {
+      color: #ff6b6b;
+      margin-top: 10px;
+    }
+    #editor-screen {
+      display: none;
+      flex-direction: column;
+      height: 100vh;
+    }
+    #editor-screen.active {
+      display: flex;
+    }
+    #toolbar {
+      background: #2d2d2d;
+      padding: 10px 20px;
+      border-bottom: 1px solid #3e3e3e;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    #room-info {
+      display: flex;
+      gap: 20px;
+      font-size: 14px;
+    }
+    #peers-list {
+      font-size: 14px;
+      color: #888;
+    }
+    #editor-container {
+      flex: 1;
+      overflow: hidden;
+    }
+    .input-group {
+      margin-bottom: 15px;
+    }
+    .input-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 14px;
+    }
+    .input-group input {
+      width: 300px;
+      padding: 8px 12px;
+      border: 1px solid #3e3e3e;
+      background: #2d2d2d;
+      color: white;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div id="login-screen">
+      <h1>P2P Collaborative Editor</h1>
+      <div class="input-group">
+        <label for="room-input">Room ID:</label>
+        <input type="text" id="room-input" placeholder="Enter room name" value="demo-room">
+      </div>
+      <button id="login-btn">Sign in with Google</button>
+      <div id="login-error" class="error"></div>
+    </div>
+
+    <div id="editor-screen">
+      <div id="toolbar">
+        <div id="room-info">
+          <span>Room: <strong id="current-room"></strong></span>
+          <span>User: <strong id="current-user"></strong></span>
+        </div>
+        <div id="peers-list">Connected peers: <span id="peer-count">0</span></div>
+      </div>
+      <div id="editor-container"></div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
